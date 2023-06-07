@@ -1,0 +1,43 @@
+#!/bin/bash
+cd $(dirname "${BASH_SOURCE[0]}")
+source ./preflight-check
+cd $DOCKER_PROJECT_FOLDER
+
+# get name of container
+if [ "$1" == "" ]
+then
+  echo ""
+  echo "No container name specified."
+  echo "To set a name for this container set the CONTAINER_NAME as an environment variable."
+  echo "You can also run this command: '$(dirname "$0")/run [CONTAINER_NAME]'."
+  echo ""
+fi
+
+echo "Using name '$CONTAINER_NAME' for this container..."
+echo ""
+
+# create a privileged container (i.e. root-level access)
+if [ "$PRIVILEGED" == 1 ]
+then
+  PRIVILEGED="--privileged"
+  echo ""
+  echo "*****************************************************************"
+  echo "*** THIS CONTAINER WILL BE CREATED WITH ROOT-LEVEL PRIVILEGES ***"
+  echo "*****************************************************************"
+  echo ""
+fi
+
+# attach the container to the network host (e.g. localhost) instead of the
+# isolated docker network
+if [ "$NETWORK_HOST" == 1 ]
+then
+  NETWORK_HOST="--network=host"
+  echo ""
+  echo "*** This container will be attached to the local host network. ***"
+  echo ""
+fi
+
+# run the container and prevent it from stopping automatically with -td
+#   * -t allocates a pseudo-TTY
+#   * -d runs the container in the background
+docker run --name $CONTAINER_NAME --hostname $CONTAINER_NAME $PRIVILEGED $NETWORK_HOST -td $DOCKER_HUB_USERNAME$DOCKER_IMAGE_NAME$DOCKER_IMAGE_TAG

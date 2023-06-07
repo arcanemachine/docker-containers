@@ -1,0 +1,1 @@
+docker exec -it penpot_penpot-backend_1 ./manage.sh create-profile

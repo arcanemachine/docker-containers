@@ -1,0 +1,7 @@
+#!/bin/bash
+cd $(dirname "${BASH_SOURCE[0]}")
+source ./preflight-check
+cd $DOCKER_PROJECT_FOLDER/scripts-generic
+
+# this will make the container accessible from the host interface (e.g localhost)
+NETWORK_HOST=1 ./run $CONTAINER_NAME

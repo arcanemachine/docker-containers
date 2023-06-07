@@ -1,0 +1,7 @@
+#!/bin/sh
+
+# podman
+docker-compose -H unix:$XDG_RUNTIME_DIR/podman/podman.sock down
+
+ # docker
+# docker-compose down

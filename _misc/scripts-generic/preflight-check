@@ -1,0 +1,62 @@
+#!/bin/bash
+
+# get the absolute path of the docker project
+cd $(dirname "${BASH_SOURCE[0]}")/..
+export DOCKER_PROJECT_FOLDER=`pwd`
+
+# source the environment variables for the project
+source .envrc
+
+# require DOCKER_HUB_USERNAME to be set
+if [ "$DOCKER_HUB_USERNAME" == "" ]
+then
+  echo "DOCKER_HUB_USERNAME not set"
+  echo ""
+  echo "Check the following:"
+  echo "  - Ensure that you have set your environment variables properly"
+  echo "  - Make sure you are running these scripts inside a Docker project folder, and not the root 'scripts' folder of the repo."
+  exit 1
+else
+  export DOCKER_HUB_USERNAME="$DOCKER_HUB_USERNAME/"
+fi
+
+# require DOCKER_IMAGE_NAME to be set
+if [ "$DOCKER_IMAGE_NAME" == "" ]
+then
+  echo "DOCKER_IMAGE_NAME not set"
+  echo ""
+  echo "Check the following:"
+  echo "  - Ensure that you have set your environment variables properly"
+  echo "  - Make sure you are running these scripts inside a Docker project folder, and not the root 'scripts' folder of the repo."
+  exit 1
+fi
+
+# get DOCKER_IMAGE_TAG
+if [ "$DOCKER_IMAGE_TAG" == "" ]
+then
+  echo "DOCKER_IMAGE_TAG not set. Using 'latest'..."
+  export DOCKER_IMAGE_TAG=":latest"
+else
+  export DOCKER_IMAGE_TAG=":$DOCKER_IMAGE_TAG"
+fi
+
+# get name of container
+if [ "$CONTAINER_NAME" != "" ]
+then
+  export CONTAINER_NAME="$CONTAINER_NAME"
+  # echo "Using container name '$CONTAINER_NAME'..."
+elif [ "$1" != "" ]
+then
+  export CONTAINER_NAME="$1"
+  # echo "Using container name '$CONTAINER_NAME'..."
+else
+  export CONTAINER_NAME=$DOCKER_IMAGE_NAME-1
+  # echo "CONTAINER_NAME not set. Using '$CONTAINER_NAME'..."
+fi
+
+# get DOCKER_CONTAINER_USER
+if [ "$DOCKER_CONTAINER_USER" == "" ]
+then
+  export DOCKER_CONTAINER_USER="root"
+  echo "DOCKER_CONTAINER_USER not set. Using 'root'..."
+fi

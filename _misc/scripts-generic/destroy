@@ -1,0 +1,7 @@
+#!/bin/bash
+cd $(dirname "${BASH_SOURCE[0]}")
+source ./preflight-check
+cd $DOCKER_PROJECT_FOLDER
+
+echo "Removing the '$CONTAINER_NAME' image..."
+docker rm $CONTAINER_NAME

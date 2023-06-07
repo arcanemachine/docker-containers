@@ -1,0 +1,9 @@
+# environment
+.env
+
+# misc
+*.ignore
+
+# vim
+Session.vim
+*.sw?

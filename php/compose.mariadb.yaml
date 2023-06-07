@@ -1,0 +1,22 @@
+---
+services:
+  mariadb:
+    image: "docker.io/mariadb"
+    container_name: "mariadb"
+    restart: "always"
+    environment:
+      MARIADB_ROOT_PASSWORD: "${MARIADB_ROOT_PASSWORD}"
+    volumes:
+      - "mariadb:/var/lib/mysql"
+    ports:
+      - "3306:3306"
+  adminer:
+    image: "docker.io/adminer"
+    container_name: "adminer"
+    restart: "always"
+    ports:
+      - "8080:8080"
+    command: ["php", "-S", "0.0.0.0:8080", "-t", "/var/www/html"]
+
+volumes:
+  mariadb:

@@ -1,0 +1,14 @@
+#!/bin/bash
+cd $(dirname "${BASH_SOURCE[0]}")/scripts-generic
+source ./preflight-check
+cd $(dirname "${BASH_SOURCE[0]}")
+
+SSH_HOST=$(./scripts-generic/container-get-ip)
+SSH_AUTH_SOCK=""
+
+# remove existing fingerprint from known hosts
+# this prevents warnings about MITM attacks
+ssh-keygen -f "$HOME/.ssh/known_hosts" -R "$SSH_HOST"
+
+ssh -i ./id_rsa $DOCKER_CONTAINER_USER@$SSH_HOST\
+    -o StrictHostKeyChecking=no

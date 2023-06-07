@@ -1,0 +1,6 @@
+#!/bin/bash
+cd $(dirname "${BASH_SOURCE[0]}")
+source ./preflight-check
+cd $DOCKER_PROJECT_FOLDER
+
+docker build -t $DOCKER_HUB_USERNAME$DOCKER_IMAGE_NAME$DOCKER_IMAGE_TAG .

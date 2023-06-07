@@ -1,0 +1,44 @@
+#!/bin/bash
+cd $(dirname "${BASH_SOURCE[0]}")
+source ./preflight-check
+cd $DOCKER_PROJECT_FOLDER
+
+
+# check output of grep to see if we need to create the container first
+docker ps -a | grep -q $CONTAINER_NAME
+
+if [ $? == 0 ]
+then
+  # container exists
+  echo "Container '$CONTAINER_NAME' exists. Let's check to see if it's running or not..."
+
+  # check if the container is running
+  docker ps -a --filter "status=running" | grep -q $CONTAINER_NAME
+  
+  if [ $? == 1 ]
+  then
+    # container is not running. let's start it...
+    echo "Container '$CONTAINER_NAME' is not running. Starting it..."
+    docker start $CONTAINER_NAME
+  else
+    echo "Container '$CONTAINER_NAME' is already running."
+  fi
+
+
+else
+  # container does not yet exist
+  if [ "$CREATE_NEW" == "" ]
+  then
+    read -p "Container doesn't exist. Create a new container? (Y/n): " CREATE_NEW
+  fi
+
+  if [ "$CREATE_NEW" != "n" ]
+  then
+    cd $(dirname "${BASH_SOURCE[0]}")
+    ./run $CONTAINER_NAME
+  else
+    echo "goodbye"
+    exit 0
+  fi
+
+fi
