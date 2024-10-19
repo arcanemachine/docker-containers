@@ -1,0 +1,3 @@
+#!/bin/sh
+
+docker compose -f compose.mariadb.yaml -f compose.adminer.yaml -f compose.mariadb-adminer.yaml -f compose.nginx.yaml up

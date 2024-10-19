@@ -13,5 +13,5 @@ Notes:
   - NOTE: All `.env` files are gitignored and will not be committed to the repository.
 - Some directories do not contain a base `compose.yaml` file (e.g. `php/`).
   - In these directories, you must specify which Compose file(s) you want to use via the `-f` flag:
-    - e.g. `docker compose -f compose.mariadb.yaml up`
+    - e.g. `docker compose -f compose.your-service.yaml -f compose.your-other-service.yaml up`
 - The `_misc` directory has a bunch of miscellaneous experimental stuff from when I was learning how Docker works, so it's a bit of a hodgepodge.

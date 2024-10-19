@@ -1,0 +1,12 @@
+---
+services:
+  adminer:
+    image: "docker.io/adminer"
+    container_name: "adminer"
+    restart: "always"
+    ports:
+      - "8080:8080"
+#     command: ["php", "-S", "0.0.0.0:8080", "-t", "/var/www/html"]
+
+volumes:
+  mariadb:
